@@ -43,6 +43,43 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
     <link href="{% static 'css/index.css' %}" rel="stylesheet">
 
+    <style type="text/css">
+        .demo-nav {
+            color: #CAFF00;
+        }
+        .demo-captions {
+            padding-top: 8px;
+            padding-left: 20px;
+            padding-right: 20px;
+            width: 320px;
+            background:rgba(0,0,0,0.72);
+            border-radius:6px;
+            width: 409px;
+        }
+        .demo-login {
+            font-weight: strong;
+            color: #FFF;
+            text-shadow: 4px 4px 4px #000;
+        }
+        a.demo-nav-link {
+            background-color: rgba(0,0,0,0.95) !important;
+            border-color: #25476A !important;
+        }
+        a.demo-nav-link:hover {
+            background-color: #25476A !important;
+        }
+        .demo-caption-container {
+            width: 100%;
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            top: 295px;
+            justify-content: space-evenly;
+        }
+
+        
+    </style>
+
 </head>
 
 <!--
@@ -53,7 +90,7 @@ The data-spy and data-target are part of the built-in Bootstrap scrollspy functi
 <body id="body" data-spy="scroll" data-target=".splash-nav" class="demo-lightbox-gallery">
 
     <!--=== Header ===-->
-    <nav class="cons-splash-nav navbar" role="navigation">
+    <nav class="cons-splash-nav navbar" style="padding: 30px 72px 24px 72px" role="navigation">
         <div class="nav-container">
             <div class="navbar-brand-disco">
                 <!--
@@ -61,33 +98,6 @@ The data-spy and data-target are part of the built-in Bootstrap scrollspy functi
                     <img class="navbar-brand-disco-icon" src="{% static 'img/landing/arches_logo_dark.png' %}" style="" alt="Arches Logo">
                 </div>
                 -->
-
-                <style type="text/css">
-                    .demo-nav {
-                        color: #CAFF00;
-                    }
-                    .demo-captions {
-                        padding-top: 8px;
-                        padding-left: 20px;
-                        padding-right: 20px;
-                        width: 320px;
-                        height: 150px;
-                        background:rgba(0,0,0,0.82);
-                        border-radius:6px;
-                    }
-                    .demo-login {
-                        font-weight: strong;
-                        color: #FFF;
-                        text-shadow: 4px 4px 4px #000;
-                    }
-                    a.demo-nav-link {
-                        background-color: rgba(0,0,0,0.95) !important;
-                        border-color: #25476A !important;
-                    }
-                    a.demo-nav-link:hover {
-                        background-color: #25476A !important;
-                    }
-                </style>
 
                 <div class="navbar-brand-disco-icon-container" style="margin-left: 50px; height: 90px; width: 320px; padding: 6px; border-width: 0; border-radius:6px; background-color: rgba(0,0,0,0.35);">
                     <!--
@@ -174,24 +184,24 @@ The data-spy and data-target are part of the built-in Bootstrap scrollspy functi
 
                         <!-- LAYERS -->
                         <!-- NEW LAYER -->
+                        <div class="demo-caption-container">
+                            <div class="sft start text-bold disco-caption demo-captions" delay="4500" data-x="-50" data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut" data-endspeed="300">
+                                <h2><a href="#info-block-1">Demo of Arches for HERs</a></h2>
+                                <p>{% trans "Explore this use of Arches to power cultural heritage consultation and resource management" %}</p>
+                            </div>
 
-                        <div class="tp-caption sft start text-bold disco-caption demo-captions" delay="4500" data-x="-50" data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut" data-endspeed="300">
-                            <h2><a href="#info-block-1">Demo of Arches for HERs</a></h2>
-                            <p>{% trans "Explore this use of Arches to power cultural heritage consultation and resource management" %}</p>
+                            <!-- NEW LAYER -->
+                            <div class="sft start text-bold disco-caption demo-captions" delay="4500" data-x="450" data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut" data-endspeed="300">
+                                <h2><a href="#info-block-2">{% trans "Search and Discover" %}</a></h2>
+                                <p>{% trans "Experiment with a sample of data for Greater London provided by Historic England" %}</p>
+                            </div>
+
+                            <!-- NEW LAYER -->
+                            <div class="sft start text-bold disco-caption demo-captions" delay="4500" data-x="950" data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut" data-endspeed="300">
+                                <h2><a href="#info-block-3">{% trans "Acknowledgements" %}</a></h2>
+                                <p>{% trans "Learn more about the organizations and initiatives behind this demonstration" %}</p>
+                            </div>
                         </div>
-
-                        <!-- NEW LAYER -->
-                        <div class="tp-caption sft start text-bold disco-caption demo-captions" delay="4500" data-x="450" data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut" data-endspeed="300">
-                            <h2><a href="#info-block-2">{% trans "Search and Discover" %}</a></h2>
-                            <p>{% trans "Experiment with a sample of data for Greater London provided by Historic England" %}</p>
-                        </div>
-
-                        <!-- NEW LAYER -->
-                        <div class="tp-caption sft start text-bold disco-caption demo-captions" delay="4500" data-x="950" data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut" data-endspeed="300">
-                            <h2><a href="#info-block-3">{% trans "Acknowledgements" %}</a></h2>
-                            <p>{% trans "Learn more about the organizations and initiatives behind this demonstration" %}</p>
-                        </div>
-
                         <!-- Gradient -->
                         <div class="image-gradient"></div>
 

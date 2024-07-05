@@ -5,7 +5,8 @@ define([
     'knockout',
     'knockout-mapping',
     'geojson-extent',
-], function($, _, arches, ko, koMapping, geojsonExtent) {
+    'templates/views/components/workflows/consultation/consultation-map-step.htm'
+], function($, _, arches, ko, koMapping, geojsonExtent, ConsultationMapStepTemplate) {
     function viewModel(params) {
         var self = this;
 
@@ -27,7 +28,7 @@ define([
                     params.form.complete(true);
                     params.form.saving(false);
                 }
-            )
+            );
         };
         this.sources = {
             "related-application-area": {
@@ -138,7 +139,7 @@ define([
         this.map = ko.observable();
 
         self.tile().dirty.subscribe(function(dirty) {
-            params.dirty(dirty)
+            params.dirty(dirty);
         });
 
         const GeoJsonNode = 'b949053a-184f-11eb-ac4a-f875a44e0e11';
@@ -148,35 +149,39 @@ define([
         var tiles = self.getTiles(ConsultationLocationNodegroup);
 
         if (tiles.length > 0) {
-            var resourceIds = koMapping.toJS(tiles[0].data[RelatedApplicationAreaNode]) || [];
-            $.getJSON({
-                url: arches.urls.geojson,
-                data: {
-                    resourceid:resourceIds.join(',')
-                }
-            }, function(geojson) {
-                if (geojson.features.length > 0) {
-                    if (!geoJSON || geoJSON.features.length === 0) {
-                        self.applicationAreaBounds(geojsonExtent(geojson));
+            var resourceObjects = koMapping.toJS(tiles[0].data[RelatedApplicationAreaNode]) || [];
+            if (resourceObjects.length > 0){
+                var resourceIdsArray = resourceObjects.map(function(resourceObject) {
+                    return resourceObject.resourceId;
+                });
+                var resourceIds = resourceIdsArray.join(',');
+                $.getJSON({
+                    url: arches.urls.geojson,
+                    data: {
+                        resourceid: resourceIds
                     }
-                    if (self.map()) {
-                        self.map().getSource('related-application-area').setData(geojson);
-                    } else {
-                        self.map.subscribe(function(map) {
-                            map.getSource('related-application-area').setData(geojson);
-                        });
+                }, function(geojson) {
+                    if (geojson.features.length > 0) {
+                        if (!geoJSON || geoJSON.features.length === 0) {
+                            self.applicationAreaBounds(geojsonExtent(geojson));
+                        }
+                        if (self.map()) {
+                            self.map().getSource('related-application-area').setData(geojson);
+                        } else {
+                            self.map.subscribe(function(map) {
+                                map.getSource('related-application-area').setData(geojson);
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
     }
 
     ko.components.register('consultation-map-step', {
         viewModel: viewModel,
-        template: {
-            require: 'text!templates/views/components/workflows/consultation/consultation-map-step.htm'
-        }
+        template: ConsultationMapStepTemplate
     });
 
     return viewModel;

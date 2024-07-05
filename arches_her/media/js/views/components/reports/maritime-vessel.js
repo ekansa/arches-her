@@ -5,9 +5,10 @@ define([
     'arches',
     'utils/resource',
     'utils/report',
+    'templates/views/components/reports/maritime-vessel.htm',
     'views/components/reports/scenes/name',
     'views/components/reports/scenes/json'
-], function($, _, ko, arches, resourceUtils, reportUtils) {
+], function($, _, ko, arches, resourceUtils, reportUtils, MaritimeVesselTemplate) {
     return ko.components.register('maritime-vessel-report', {
         viewModel: function(params) {
             var self = this;
@@ -67,7 +68,12 @@ define([
 
             self.resourceDataConfig = {
                 files: 'digital file(s)',
+                activities: 'associated activities',
+                consultations: 'associated consultations',
+                assets: 'associated monuments, areas and artefacts',
+                period: undefined,
                 actors: undefined,
+                archive: 'associated archives',
                 resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             }
 
@@ -256,6 +262,6 @@ define([
             }
 
         },
-        template: { require: 'text!templates/views/components/reports/maritime-vessel.htm' }
+        template: MaritimeVesselTemplate
     });
 });

@@ -4,7 +4,8 @@ define([
     'arches',
     'knockout',
     'knockout-mapping',
-], function(_, $, arches, ko, koMapping) {
+    'templates/views/components/workflows/select-resource-step.htm'
+], function(_, $, arches, ko, koMapping, SelectResourceStepTemplate) {
     function viewModel(params) {
         _.extend(this, params.form);
 
@@ -15,17 +16,17 @@ define([
             if (val){
                 self.tile().resourceinstance_id = val;
             }
-        })
+        });
         this.tile().transactionId = this.workflowId;
         this.tile().dirty.subscribe(function(dirty) {
-            self.dirty(dirty)
+            self.dirty(dirty);
         });
 
         this.initilize = function(){
             if (ko.unwrap(self.savedData)) {
                 self.resourceValue(ko.unwrap(self.savedData).resourceInstanceId);
             }
-        }
+        };
 
         params.form.save = function() {
             self.tile().save().then(
@@ -40,16 +41,14 @@ define([
                     params.form.complete(true);
                     params.form.saving(false);
                 }
-            )
+            );
         };
         this.initilize();
     }
 
     ko.components.register('select-resource-step', {
         viewModel: viewModel,
-        template: {
-            require: 'text!templates/views/components/workflows/select-resource-step.htm'
-        }
+        template: SelectResourceStepTemplate
     });
 
     return viewModel;

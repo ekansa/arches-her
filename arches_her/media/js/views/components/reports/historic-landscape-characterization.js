@@ -5,9 +5,10 @@ define([
     'arches',
     'utils/resource',
     'utils/report',
+    'templates/views/components/reports/historic-landscape-characterization.htm',
     'views/components/reports/scenes/name',
     'views/components/reports/scenes/json'
-], function($, _, ko, arches, resourceUtils, reportUtils) {
+], function($, _, ko, arches, resourceUtils, reportUtils, HistoricLandscapeCharacterizationTemplate ) {
     return ko.components.register('historic-landscape-characterization-report', {
         viewModel: function(params) {
             var self = this;
@@ -56,11 +57,14 @@ define([
                 citation: 'bibliographic source citation'
             };
             self.resourceDataConfig = {
-                activities: undefined,
                 files: undefined,
+                activities: undefined,
                 consultations: undefined,
+                assets: 'associated monuments, areas and artefacts',
+                period: undefined,
+                actors: undefined,
                 archive: undefined,
-                actors: undefined
+                resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             }
 
             self.nameCards = {};
@@ -194,6 +198,6 @@ define([
                     ]
             });
         },
-        template: { require: 'text!templates/views/components/reports/historic-landscape-characterization.htm' }
+        template: HistoricLandscapeCharacterizationTemplate
     });
 });

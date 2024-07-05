@@ -5,11 +5,12 @@ define([
     'arches',
     'utils/resource',
     'utils/report',
+    'templates/views/components/reports/bibliographic-source.htm',
     'views/components/reports/scenes/name',
     'views/components/reports/scenes/audit',
     'views/components/reports/scenes/default',
     'views/components/reports/scenes/json'
-], function($, _, ko, arches, resourceUtils, reportUtils) {
+], function($, _, ko, arches, resourceUtils, reportUtils, BibliographicSourceTemplate) {
     return ko.components.register('bibliographic-source-report', {
         viewModel: function(params) {
             var self = this;
@@ -55,12 +56,14 @@ define([
             };
 
             self.resourceDataConfig = {
+                files: 'digital file(s)',
                 activities: undefined,
                 archive: undefined,
                 consultations: undefined,
                 assets: undefined,
-                files: 'digital file(s)',
-                actors: undefined
+                period: undefined,
+                actors: undefined,
+                resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 
             self.publication = ko.observableArray();
@@ -193,6 +196,6 @@ define([
             });
 
         },
-        template: { require: 'text!templates/views/components/reports/bibliographic-source.htm' }
+        template: BibliographicSourceTemplate
     });
 });

@@ -5,9 +5,10 @@ define([
     'arches',
     'utils/resource',
     'utils/report',
+    'templates/views/components/reports/consultation.htm',
     'views/components/reports/scenes/name',
     'views/components/reports/scenes/json'
-], function($, _, ko, arches, resourceUtils, reportUtils) {
+], function($, _, ko, arches, resourceUtils, reportUtils, ConsultationTemplate) {
     return ko.components.register('consultation-report', {
         viewModel: function(params) {
             var self = this;
@@ -58,8 +59,10 @@ define([
             self.resourcesDataConfig = {
                 assets: 'related monuments and areas',
                 files: 'file(s)',
-                relatedApplicationArea: 'consultation area',
+                relatedApplicationArea: undefined,
+                consultation: 'associated consultations',
                 actors: undefined,
+                archive: undefined,
                 resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 
@@ -433,7 +436,7 @@ define([
                                 type: 'kv'
                             },{
                                 key: 'Consultation Status',
-                                value: self.getNodeValue(self.resource(), 'status'),
+                                value: self.getNodeValue(self.resource(), 'status') == "True" ? "Active" : "Inactive",
                                 type: 'kv'
                             }]
                         }
@@ -463,6 +466,6 @@ define([
                     ]
             });
         },
-        template: { require: 'text!templates/views/components/reports/consultation.htm' }
+        template: ConsultationTemplate
     });
 });

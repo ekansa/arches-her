@@ -14,24 +14,24 @@ define([
 
         this.getResourceData = function() {
             window.fetch(this.urls.api_resources(this.resourceid) + '?format=json&compact=false')
-            .then(response => response.json())
-            .then(data => this.resourceData(data))
+                .then(response => response.json())
+                .then(data => this.resourceData(data));
         };
 
         this.getRelatedResources = function() {
             window.fetch(this.urls.related_resources + this.resourceid + "?paginate=false")
-            .then(response => response.json())
-            .then(data => this.relatedResources(data))
+                .then(response => response.json())
+                .then(data => this.relatedResources(data));
         };
 
         this.init = function(){
             this.getResourceData();
-            this.getRelatedResources()
+            this.getRelatedResources();
         };
 
         this.getResourceValue = function(obj, attrs, missingValue='none') {
             try {
-                return attrs.reduce(function index(obj, i) {return obj[i]}, obj) || missingValue;
+                return attrs.reduce(function index(obj, i) {return obj[i];}, obj) || missingValue;
             } catch(e) {
                 return missingValue;
             }
@@ -45,9 +45,9 @@ define([
             }
             var sourceConfig = {};
             sourceConfig[source] = {
-                    "type": "geojson",
-                    "data": geojson
-                };
+                "type": "geojson",
+                "data": geojson
+            };
             mapParams.sources = Object.assign(sourceConfig, mapParams.sources);
             mapParams.layers = selectFeatureLayersFactory(
                 '', //resourceid

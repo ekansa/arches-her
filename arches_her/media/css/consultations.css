@@ -1,5 +1,5 @@
 .menu-title {
-    font-size: 17px;
+    font-size: 1.7rem;
 }
 
 .search-result {
@@ -60,7 +60,7 @@
 }
 
 .map-popup-content section .title {
-    font-size: 15px;
+    font-size: 1.5rem;
     font-weight: 400;
 }
 
@@ -69,7 +69,7 @@
 }
 
 .map-popup-content .title {
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: bold;
 }
 

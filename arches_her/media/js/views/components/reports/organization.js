@@ -5,10 +5,11 @@ define([
     'arches',
     'utils/resource',
     'utils/report',
+    'templates/views/components/reports/organization.htm',
     'views/components/reports/scenes/name',
     'views/components/reports/scenes/contact',
     'views/components/reports/scenes/json'
-], function($, _, ko, arches, resourceUtils, reportUtils) {
+], function($, _, ko, arches, resourceUtils, reportUtils, OrganizationTemplate) {
     return ko.components.register('organization-report', {
         viewModel: function(params) {
             var self = this;
@@ -55,10 +56,14 @@ define([
             };
 
             self.resourceDataConfig = {
-                consultations: undefined,
                 files: undefined,
+                activities: 'associated activities',
+                consultations: undefined,
+                assets: 'associated monuments, areas and artefacts',
+                period: undefined,
+                actors: undefined,
                 archive: undefined,
-                actors: undefined
+                resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 
             self.nameCards = {};
@@ -149,6 +154,6 @@ define([
             });
 
         },
-        template: { require: 'text!templates/views/components/reports/organization.htm' }
+        template: OrganizationTemplate
     });
 });

@@ -1,4 +1,25 @@
-@import url(report_templates.css);
+@import url(./report_templates.css);
+@import url(./bng-filter.css);
+@import url(./accessibility-plugin.css);
+
+/* Core styling overwrite for hotfixes */
+
+.card-form-preview-container {
+    -ms-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    background: #ebeef0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 100vh;
+    }
+
+/* End core styling overwrite for hotfixes*/
+
+header {
+    max-width: calc(100vw - 50px);
+}
+
 .workflow-panel.navbarclosed {
     min-width: 50px;
     width: 50px;
@@ -804,6 +825,10 @@ table.report-tabular-card {
     margin-top: 10px;
 }
 
+.tabbed-workflow-step-body .workbench-card-sidepanel .install-buttons {
+    display: none;
+}
+
 .report-tabular-card td {
     padding: 4px;
     color: #a3a4a4;
@@ -990,4 +1015,45 @@ span.rp-tile-title {
     width: 100%;
     height: 100%;
     padding: 0px;
+}
+
+/* Ensures search tags gracefully display any text overflowing */
+
+.term-search-filter .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    max-width: 96%;
+    text-overflow: ellipsis;
+}
+
+.term-search-filter .select2-container--default .select2-selection--multiple .select2-selection__choice button.search-tag {
+    max-width: 98%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/* STOPS top level side panels being obscured by search filter popups in search*/
+
+.ep-notifs {
+    z-index: 12000;
+}
+
+.ep-help {
+    z-index: 12000;
+}
+
+.ep-edits {
+    z-index: 12000;
+}
+
+/* Makes side panels cover the whole height of the page when the UI stacks in mobile mode */
+
+.ep-help-panel{
+    height: 100%;
+}
+
+.ep-edits-panel{
+    height: 100%;
+}
+
+.ep-notifs-panel{
+    height: 100%;
 }

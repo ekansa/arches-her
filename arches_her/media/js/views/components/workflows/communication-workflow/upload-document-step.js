@@ -5,11 +5,13 @@ define([
     'knockout-mapping',
     'uuid',
     'arches',
+    'utils/workflows',
+    'templates/views/components/workflows/communication-workflow/upload-document-step.htm',
     'bindings/select2-query',
-], function($, _, ko, koMapping, uuid, arches) {
+], function($, _, ko, koMapping, uuid, arches, workflowUtils, UploadDocumentStepTemplate) {
     function viewModel(params) {
         var self = this;
-
+        Object.assign(self, workflowUtils);
         this.consultationResourceId = ko.observable(ko.unwrap(params.consultationResourceid));
         this.consultationTileId = params.consultationTileid;
         this.digitalResourceNameNodegroupId = 'c61ab163-9513-11ea-9bb6-f875a44e0e11';
@@ -64,7 +66,7 @@ define([
             const consultation = await window.fetch(arches.urls.api_resources(ko.unwrap(self.consultationResourceId)) + '?format=json');
             if (consultation?.ok) {
                 const consultationResult = await consultation.json();
-                nameTemplate.data[self.digitalResourceNameNodeId] = "Communication for " + consultationResult.displayname;
+                nameTemplate.data[self.digitalResourceNameNodeId] = self.createI18nString("Communication for " + consultationResult.displayname);
                 if (!self.digitalResourceNameTileId) {
                     self.digitalResourceNameTileId = uuid.generate();
                 } else {
@@ -112,7 +114,7 @@ define([
 
     ko.components.register('upload-document-step', {
         viewModel: viewModel,
-        template: { require: 'text!templates/views/components/workflows/communication-workflow/upload-document-step.htm' }
+        template: UploadDocumentStepTemplate
     });
     return viewModel;
 });

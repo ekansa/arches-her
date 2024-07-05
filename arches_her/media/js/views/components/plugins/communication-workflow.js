@@ -1,11 +1,14 @@
 define([
     'knockout',
+    'jquery',
     'arches',
     'viewmodels/workflow',
+    'viewmodels/alert',
+    'templates/views/components/plugins/communication-workflow.htm',
     'views/components/workflows/communication-workflow/communication-select-resource',
     'views/components/workflows/communication-workflow/upload-document-step',
     'views/components/workflows/communication-workflow/communication-final-step'
-], function(ko, arches, Workflow) {
+], function(ko, $, arches, Workflow, AlertViewModel, CommunicationWorkflowTemplate) {
     return ko.components.register('communication-workflow', {
         viewModel: function(params) {
             this.componentName = 'communication-workflow';
@@ -25,6 +28,7 @@ define([
                                 { 
                                     componentName: 'communication-select-resource',
                                     uniqueInstanceName: 'communication-select-resource', /* unique to step */
+                                    tilesManaged: 'one',
                                     parameters: {
                                         graphid: '8d41e49e-a250-11e9-9eab-00224800b26d',
                                         nodegroupid: 'caf5bff1-a3d7-11e9-aa28-00224800b26d',
@@ -48,8 +52,8 @@ define([
                                     parameters: {
                                         graphid: '8d41e49e-a250-11e9-9eab-00224800b26d',
                                         nodegroupid: 'caf5bff1-a3d7-11e9-aa28-00224800b26d',
-                                        resourceid: "['related-consultation']['communication-select-resource']['resourceid']",
-                                        tileid: "['related-consultation']['communication-select-resource']['tileid']",
+                                        resourceid: "['related-consultation']['communication-select-resource']['resourceInstanceId']",
+                                        tileid: "['related-consultation']['communication-select-resource']['tileId']",
                                         hiddenNodes: [
                                             'caf5bffa-a3d7-11e9-8b1b-00224800b26d',
                                             '85af6942-9379-11ea-88ff-f875a44e0e11',
@@ -91,8 +95,8 @@ define([
                                     parameters: {
                                         graphid: '8d41e49e-a250-11e9-9eab-00224800b26d',
                                         nodegroupid: 'caf5bff1-a3d7-11e9-aa28-00224800b26d',
-                                        resourceid: "['related-consultation']['communication-select-resource']['resourceid']",
-                                        tileid: "['related-consultation']['communication-select-resource']['tileid']",
+                                        resourceid: "['related-consultation']['communication-select-resource']['resourceInstanceId']",
+                                        tileid: "['related-consultation']['communication-select-resource']['tileId']",
                                         hiddenNodes: [
                                             'caf5bffa-a3d7-11e9-8b1b-00224800b26d',
                                             '85af6942-9379-11ea-88ff-f875a44e0e11',
@@ -134,9 +138,9 @@ define([
                                     parameters: {
                                         graphid: 'a535a235-8481-11ea-a6b9-f875a44e0e11',
                                         nodegroupid: '7db68c6c-8490-11ea-a543-f875a44e0e11',
-                                        consultationResourceid: "['related-consultation']['communication-select-resource']['resourceid']",
-                                        consultationTileid: "['related-consultation']['communication-select-resource']['tileid']",
-                                    },
+                                        consultationResourceid: "['related-consultation']['communication-select-resource']['resourceInstanceId']",
+                                        consultationTileid: "['related-consultation']['communication-select-resource']['tileId']"
+                                    }
                                 },
                             ], 
                         },
@@ -161,8 +165,8 @@ define([
                                     tilesManaged: 'none',
                                     parameters: {
                                         digitalObject: "['upload-documents']['upload-documents-step']",
-                                        consultationTileid: "['related-consultation']['communication-select-resource']['tileid']",
-                                        consultationResourceid: "['related-consultation']['communication-select-resource']['resourceid']",
+                                        consultationResourceid: "['related-consultation']['communication-select-resource']['resourceInstanceId']",
+                                        consultationTileid: "['related-consultation']['communication-select-resource']['tileId']"
                                     },
                                 },
                             ], 
@@ -176,14 +180,39 @@ define([
                     parenttileid: null,
                     informationboxdata: {
                         heading: 'Workflow Complete: Review your work',
-                        text: 'Please review the summary information. You can go back to a previous step to make changes or "Quit Workflow" to discard your changes and start over',
+                        text: 'Please review the summary information. You can go back to a previous step to make changes or "Delete" to discard your changes and start over',
                     }
                 }
             ];
             
             Workflow.apply(this, [params]);
             this.quitUrl = arches.urls.plugin('init-workflow');
+            this.reverseWorkflowTransactions = function() {
+                const quitUrl = this.quitUrl;
+                return $.ajax({
+                    type: "POST",
+                    url: arches.urls.transaction_reverse(this.id())
+                }).then(function() {
+                    params.loading(false);
+                    window.location.href = quitUrl;
+                });
+            };
+
+            this.quitWorkflow = function(){
+                this.alert(
+                    new AlertViewModel(
+                        'ep-alert-red',
+                        'Are you sure you would like to delete this workflow?',
+                        'All data created during the course of this workflow will be deleted.',
+                        function(){}, //does nothing when canceled
+                        () => {
+                            params.loading('Cleaning up...');
+                            this.reverseWorkflowTransactions();
+                        },
+                    )
+                );
+            };
         },
-        template: { require: 'text!templates/views/components/plugins/communication-workflow.htm' }
+        template: CommunicationWorkflowTemplate
     });
 });

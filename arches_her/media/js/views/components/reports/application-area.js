@@ -5,10 +5,11 @@ define([
     'arches',
     'utils/resource',
     'utils/report',
+    'templates/views/components/reports/application-area.htm',
     'views/components/reports/scenes/name',
     'views/components/reports/scenes/referenced-by',
     'views/components/reports/scenes/json'
-], function($, _, ko, arches, resourceUtils, reportUtils) {
+], function($, _, ko, arches, resourceUtils, reportUtils, ApplicationAreaTemplate) {
     return ko.components.register('application-area-report', {
         viewModel: function(params) {
             var self = this;
@@ -29,7 +30,6 @@ define([
                 ...self.defaultTableConfig,
                 paging: true,
                 searching: true,
-                scrollY: "250px",
                 columns: Array(2).fill(null)
             };
 
@@ -41,7 +41,7 @@ define([
             self.activeSection = ko.observable('name');
             self.visible = {
                 applicationAreas: ko.observable(true)
-            }
+            };
 
             self.applicationAreas = ko.observableArray();
 
@@ -51,14 +51,19 @@ define([
 
             self.resourceDataConfig = {
                 files: 'digital file(s)',
-                actors: undefined
+                assets: 'associated monuments, areas and artefacts',
+                activities: 'associated activities',
+                actors: undefined,
+                consultations: 'associated consultations',
+                archive: undefined,
+                resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid,
             };
 
             self.locationDataConfig = {
                 location: [],
                 nationalGrid: undefined,
                 namedLocations: undefined
-            }
+            };
 
             self.protectionDataConfig = {
                 landUse: undefined,
@@ -86,17 +91,17 @@ define([
             if(params.report.cards){
                 const cards = params.report.cards;
 
-                self.cards = self.createCardDictionary(cards)
+                self.cards = self.createCardDictionary(cards);
 
                 Object.assign(self.cards, {
                     applicationAreas: self.cards?.['associated application areas']
-                })
+                });
 
                 self.resourcesCards = {
-                    activities: self.cards?.['associated activities'],
                     consultations: self.cards?.['associated consultations'],
+                    activities: self.cards?.['associated activities'],
+                    assets: self.cards?.['associated monuments, areas and artefacts'],
                     files: self.cards?.['associated digital files'],
-                    assets: self.cards?.['associated heritage assets'],
                 };
 
                 self.nameCards = {
@@ -128,6 +133,6 @@ define([
             }
 
         },
-        template: { require: 'text!templates/views/components/reports/application-area.htm' }
+        template: ApplicationAreaTemplate
     });
 });

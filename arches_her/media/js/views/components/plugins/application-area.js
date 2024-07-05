@@ -1,11 +1,13 @@
 define([
     'knockout',
+    'jquery',
     'arches',
     'viewmodels/workflow',
+    'viewmodels/alert',
+    'templates/views/components/plugins/application-area.htm',
     'views/components/workflows/new-tile-step',
-    'views/components/workflows/application-area/app-area-address-step',
     'views/components/workflows/application-area/app-area-final-step'
-], function(ko, arches, Workflow) {
+], function(ko, $, arches, Workflow, AlertViewModel,ApplicationAreaTemplate) {
     return ko.components.register('application-area', {
         viewModel: function(params) {
             this.componentName = 'application-area';
@@ -183,14 +185,39 @@ define([
                     ],
                     informationboxdata: {
                         heading: 'Workflow Complete: Review your work',
-                        text: 'Please review the summary information. You can go back to a previous step to make changes or "Quit Workflow" to discard your changes and start over',
+                        text: 'Please review the summary information. You can go back to a previous step to make changes or "Delete" to discard your changes and start over',
                     }
                 }
             ];
 
             Workflow.apply(this, [params]);
             this.quitUrl = arches.urls.plugin('init-workflow');
+            this.reverseWorkflowTransactions = function() {
+                const quitUrl = this.quitUrl;
+                return $.ajax({
+                    type: "POST",
+                    url: arches.urls.transaction_reverse(this.id())
+                }).then(function() {
+                    params.loading(false);
+                    window.location.href = quitUrl;
+                });
+            };
+
+            this.quitWorkflow = function(){
+                this.alert(
+                    new AlertViewModel(
+                        'ep-alert-red',
+                        'Are you sure you would like to delete this workflow?',
+                        'All data created during the course of this workflow will be deleted.',
+                        function(){}, //does nothing when canceled
+                        () => {
+                            params.loading('Cleaning up...');
+                            this.reverseWorkflowTransactions();
+                        },
+                    )
+                );
+            };
         },
-        template: { require: 'text!templates/views/components/plugins/application-area.htm' }
+        template: ApplicationAreaTemplate
     });
 });

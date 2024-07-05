@@ -1,4 +1,11 @@
-define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable'], function(_, ko, arches, reportUtils) {
+define([
+    'underscore', 
+    'knockout', 
+    'arches', 
+    'utils/report',
+    'templates/views/components/reports/scenes/classifications.htm',
+    'bindings/datatable'], 
+function(_, ko, arches, reportUtils, ClassificationsTemplate) {
     return ko.components.register('views/components/reports/scenes/classifications', {
         viewModel: function(params) {
             const self = this;
@@ -361,6 +368,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                             testPaths:[
                                 ['associated area phase'],
                                 ['associated asset construction phase'],
+                                ['associated monument construction phase'],
                             ]}
                         );
                         const component = self.getNodeValue(x, 'component', 'component type');
@@ -451,6 +459,6 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
             }
 
         },
-        template: { require: 'text!templates/views/components/reports/scenes/classifications.htm' }
+        template: ClassificationsTemplate
     });
 });

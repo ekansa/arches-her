@@ -3,11 +3,14 @@ define([
     'arches',
     'knockout',
     'knockout-mapping',
-], function($, arches, ko, koMapping) {
+    'utils/workflows',
+    'templates/views/components/workflows/consultation/consultation-dates-step.htm'
+], function($, arches, ko, koMapping, workflowUtils, ConsultationDatesStepTemplate) {
     function viewModel(params) {
 
         var self = this;
         $.extend(this, params.form);
+        Object.assign(self, workflowUtils);
         self.resourceid = params.resourceid;
 
         this.relatedAppAreaTile = ko.observable();
@@ -23,12 +26,22 @@ define([
         this.tile().transactionId = this.workflowId;
 
         this.getResourceDisplayName = function(resourceids) {
-            var retStr = '';
+            let retStr = '';
+            let activeLang = arches.activeLanguage;
             resourceids.forEach(function(id) {
                 $.get(
                     arches.urls.resource_descriptors + id,
                     function(descriptors) {
-                        retStr == '' ? retStr = descriptors.displayname : retStr += (', '+descriptors.displayname);
+                        if (typeof descriptors.displayname === 'string') {
+                            retStr == '' ? retStr = descriptors.displayname : retStr += (', '+ descriptors.displayname);
+                        }
+                        else {
+                            descriptors.displayname.forEach(function(displayname) {
+                                if (displayname.language === activeLang) {
+                                    retStr == '' ? retStr = displayname.value : retStr += (', '+displayname.value);
+                                }
+                            });
+                        }   
                         self.displayName(retStr);
                     }
                 );
@@ -45,7 +58,11 @@ define([
             } else {
                 nameCardTile = nameCard.tiles()[0];
             }
-            nameCardTile.data[self.consultationNameNodeId](self.concatName());
+            
+            if (typeof nameCardTile.data[self.consultationNameNodeId] !== 'function'){
+                nameCardTile.data[self.consultationNameNodeId] = ko.observable(nameCardTile.data[self.consultationNameNodeId]);
+            }
+            nameCardTile.data[self.consultationNameNodeId](self.createI18nString(self.concatName()));
             nameCardTile.transactionId = self.workflowId;
             return nameCardTile.save();
         };
@@ -118,8 +135,6 @@ define([
 
     return ko.components.register('consultation-dates-step', {
         viewModel: viewModel,
-        template: {
-            require: 'text!templates/views/components/workflows/consultation/consultation-dates-step.htm'
-        }
+        template: ConsultationDatesStepTemplate
     });
 });

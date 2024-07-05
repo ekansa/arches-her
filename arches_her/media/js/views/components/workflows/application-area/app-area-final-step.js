@@ -1,7 +1,8 @@
 define([
     'knockout',
     'views/components/workflows/summary-step',
-], function(ko, SummaryStep) {
+    'templates/views/components/workflows/application-area/app-area-final-step.htm'
+], function(ko, SummaryStep, AppAreaFinalStepTemplate) {
 
     function viewModel(params) {
         SummaryStep.apply(this, [params]);
@@ -20,8 +21,8 @@ define([
 
             try {
                 this.reportVals.designations = val.resource['Designation and Protection Assignment'].map(function(designation){
-                    const reference = self.getResourceValue(designation,['Reference URL','@value'])
-                    const referenceUrl = (reference !== 'none') ? JSON.parse(reference).url : undefined
+                    const reference = self.getResourceValue(designation,['Reference URL','@value']);
+                    const referenceUrl = (reference !== 'none') ? JSON.parse(reference).url : undefined;
                     const referenceLabel = (reference !== 'none') && JSON.parse(reference).url_label !== '' ? JSON.parse(reference).url_label
                         : referenceUrl ? referenceUrl: 'none';
                     return {
@@ -33,7 +34,7 @@ define([
                         designationReference: {'name': 'Reference', 'value': referenceLabel, 'link': referenceUrl},
                         designationDigitalFiles: {'name': 'Digital File(s)', 'value': self.getResourceValue(designation,['Digital File(s)','@value'])},
                     };
-                })
+                });
             } catch(e) {
                 this.reportVals.designations = [];
             }
@@ -54,7 +55,7 @@ define([
 
     ko.components.register('app-area-final-step', {
         viewModel: viewModel,
-        template: { require: 'text!templates/views/components/workflows/application-area/app-area-final-step.htm' }
+        template: AppAreaFinalStepTemplate
     });
     return viewModel;
 });

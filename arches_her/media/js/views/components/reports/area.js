@@ -5,6 +5,7 @@ define([
     'arches',
     'utils/resource',
     'utils/report',
+    'templates/views/components/reports/area.htm',
     'views/components/reports/scenes/name',
     'views/components/reports/scenes/assessments',
     'views/components/reports/scenes/images',
@@ -12,7 +13,7 @@ define([
     'views/components/reports/scenes/people',
     'views/components/reports/scenes/resources',
     'views/components/reports/scenes/json'
-], function($, _, ko, arches, resourceUtils, reportUtils) {
+], function($, _, ko, arches, resourceUtils, reportUtils, AreaTemplate) {
     return ko.components.register('area-report', {
         viewModel: function(params) {
             var self = this;
@@ -55,7 +56,12 @@ define([
 
             self.resourceDataConfig = {
                 files: 'digital file(s)',
+                activities: 'associated activities',
+                consultations: 'associated consultations',
+                assets: 'associated monuments, areas and artefacts',
+                period: undefined,
                 actors: undefined,
+                archive: 'associated archives',
                 resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 
@@ -140,6 +146,6 @@ define([
             }
 
         },
-        template: { require: 'text!templates/views/components/reports/area.htm' }
+        template: AreaTemplate
     });
 });

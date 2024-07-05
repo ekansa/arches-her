@@ -5,9 +5,10 @@ define([
     'arches',
     'utils/resource',
     'utils/report',
+    'templates/views/components/reports/historic-aircraft.htm',
     'views/components/reports/scenes/name',
     'views/components/reports/scenes/json'
-], function($, _, ko, arches, resourceUtils, reportUtils) {
+], function($, _, ko, arches, resourceUtils, reportUtils, HistoricAircraftTemplate) {
     return ko.components.register('historic-aircraft-report', {
         viewModel: function(params) {
             var self = this;
@@ -57,7 +58,12 @@ define([
 
             self.resourceDataConfig = {
                 files: 'digital file(s)',
+                activities: 'associated activities',
+                consultations: 'associated consultations',
+                assets: 'associated monuments, areas and artefacts',
+                period: undefined,
                 actors: undefined,
+                archive: 'associated archives',
                 resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             }
 
@@ -269,6 +275,6 @@ define([
             }
 
         },
-        template: { require: 'text!templates/views/components/reports/historic-aircraft.htm' }
+        template: HistoricAircraftTemplate
     });
 });

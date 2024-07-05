@@ -1,4 +1,11 @@
-define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable'], function(_, ko, arches, reportUtils) {
+define([
+    'underscore', 
+    'knockout', 
+    'arches', 
+    'utils/report',
+    'templates/views/components/reports/scenes/description.htm',
+    'bindings/datatable'], 
+function(_, ko, arches, reportUtils, DescriptionTemplate) {
     return ko.components.register('views/components/reports/scenes/description', {
         viewModel: function(params) {
             const self = this;
@@ -9,7 +16,6 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                 ...self.defaultTableConfig,
                 "paging": true,
                 "searching": true,
-                "scrollY": "250px",
                 "columns": Array(2).fill(null)
             };
 
@@ -25,8 +31,8 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
             self.citationTableConfig = {
                 ...self.defaultTableConfig,
                 "columns": [
-                    { "width": "90%" },
-                    null,
+                    { "width": "70%" },
+                    { "width": "20%" },
                     null,
                     null,
                     null,
@@ -37,7 +43,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
 
             self.dataConfig = {
                 descriptions: 'descriptions'
-            }
+            };
 
             self.cards = Object.assign({}, params.cards);
             self.edit = params.editTile || self.editTile;
@@ -51,7 +57,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                 descriptions: ko.observable(true),
                 citation: ko.observable(true),
                 audience: ko.observable(true)
-            }
+            };
             Object.assign(self.dataConfig, params.dataConfig || {});
 
             // if params.compiled is set and true, the user has compiled their own data.  Use as is.
@@ -86,7 +92,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                         const pages = self.getNodeValue(x, 'pages', 'page(s)');
                         const figures = self.getNodeValue(x, 'figures', 'figs.');
                         const plates = self.getNodeValue(x, 'plates', 'plate(s)');
-                        const comment = self.getNodeValue(x, 'source comment', 'comment')
+                        const comment = self.getNodeValue(x, 'source comment', 'comment');
                         const tileid = self.getTileId(x);
                         return { link, linkText, sourceNumber, pages, figures, plates, comment, tileid };
                     }));
@@ -123,6 +129,6 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
             }
 
         },
-        template: { require: 'text!templates/views/components/reports/scenes/description.htm' }
+        template: DescriptionTemplate
     });
 });

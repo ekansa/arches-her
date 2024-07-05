@@ -26,12 +26,12 @@ import docx
 import textwrap
 from docx import Document
 from docx.text.paragraph import Paragraph
-from docx.oxml.xmlchemy import OxmlElement
+from docx.oxml.parser import OxmlElement
 from html.parser import HTMLParser
 from html.entities import name2codepoint
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponseNotFound
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic import View
 from arches.app.datatypes.datatypes import DataTypeFactory
 from arches.app.models import models
@@ -76,22 +76,26 @@ class FileTemplateView(View):
         self.resource.load_tiles()
 
         template_name = self.get_template_path(template_id)
+        filename, file_extension = os.path.splitext(template_name)
         template_path = os.path.join(settings.APP_ROOT, "docx", template_name)
 
-        if os.path.exists(os.path.join(settings.APP_ROOT, "uploadedfiles", "docx")) is False:
-            os.mkdir(os.path.join(settings.APP_ROOT, "uploadedfiles", "docx"))
+        uploaded_docx_path = os.path.join(settings.APP_ROOT, "uploadedfiles", "docx")
+        if not os.path.exists(uploaded_docx_path):
+            os.mkdir(uploaded_docx_path)
 
         try:
             self.doc = Document(template_path)
-        except:
+        except FileNotFoundError:
             return HttpResponseNotFound("No Template Found")
 
         self.edit_letter(self.resource, datatype_factory)
 
-        date = datetime.today()
-        date = date.strftime("%Y") + "-" + date.strftime("%m") + "-" + date.strftime("%d")
-        new_file_name = date + "_" + template_name
-        new_file_path = os.path.join(settings.APP_ROOT, "uploadedfiles/docx", new_file_name)
+        current_datetime = datetime.today()
+        date = current_datetime.strftime("%Y-%m-%d")
+        time = current_datetime.strftime("%H%M%S%f")
+
+        new_file_name = f"{date}_{filename}_{time}{file_extension}"
+        new_file_path = os.path.join(settings.APP_ROOT, "uploadedfiles", "docx", new_file_name)
 
         new_req = HttpRequest()
         new_req.method = "POST"
@@ -224,6 +228,28 @@ class FileTemplateView(View):
             datatype = datatype_factory.get_instance(current_node.datatype)
             returnvalue = datatype.get_display_value(tile, current_node)
             return "" if returnvalue is None else returnvalue
+        
+        def remove_non_xml_compatible_chars(s: str) -> str:
+            """
+            Remove characters that are not compatible with XML.
+            XML 1.0 compatible characters:
+            - U+0009, U+000A, U+000D (whitespace characters)
+            - U+0020 to U+D7FF
+            - U+E000 to U+FFFD
+            XML 1.1 additionally allows:
+            - U+0001 to U+0008, U+000B to U+000C, U+000E to U+001F
+            But for broad compatibility, we'll target XML 1.0 here.
+            :param s: Input string
+            :return: String with non-XML-compatible characters removed
+            """
+            # For XML 1.0, adjust ranges if targeting XML 1.1
+            return "".join(
+                char
+                for char in s
+                if ord(char) in (0x9, 0xA, 0xD)
+                or 0x20 <= ord(char) <= 0xD7FF
+                or 0xE000 <= ord(char) <= 0xFFFD
+            )
 
         # Advice and Conditions.
         advice_nodegroup_id = "8d41e49f-a250-11e9-b6b3-00224800b26d"
@@ -357,7 +383,7 @@ class FileTemplateView(View):
                                 mapping_dict["Name of person consulting"] = "{0} {1}".format(nameTitle, fullName) if nameTitle else fullName
                         elif contactTile.nodegroup.nodegroupid == uuid.UUID(contactDetailsNodegroupId):
                             if contactTile.data[contactPointTypeNodeId] == contactPointTypeMailValueId:
-                                mapping_dict["Contact Name"] = contactTile.data[contactNameForCorrespondenceNodeId]
+                                mapping_dict["Contact Name"] = get_value_from_tile(contactTile, contactNameForCorrespondenceNodeId)
                                 addressConsult = (
                                     get_value_from_tile(contactTile, contactPointNodeId).replace(", ", "<br>").replace(",", "<br>")
                                 )
@@ -393,7 +419,10 @@ class FileTemplateView(View):
             html = False
             if htmlTags.search(mapping_dict[key] if mapping_dict[key] is not None else ""):
                 html = True
-            self.replace_string(self.doc, key, mapping_dict[key], html)
+            xml_compatible_string = remove_non_xml_compatible_chars(mapping_dict[key])
+            self.replace_string(self.doc, key, xml_compatible_string, html)
+            
+            
 
     def replace_string(self, document, key, v, html=False):
         # Note that the intent here is to preserve how things are styled in the docx

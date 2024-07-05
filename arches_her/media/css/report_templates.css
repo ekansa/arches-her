@@ -5,25 +5,25 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+    overflow-y: auto !important;
+}
+
+.resource-component-abstract.reportSummary {
+    overflow-y: inherit !important;
 }
 
 .aher-tabbed-report .fa-angle-double-right {
     padding-left: 1px;
 }
 
-.aher-table-control div
-{
+.aher-table-control div {
     display: inline;
 }
 
-.aher-table table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before {
-    top: 7px;
-}
-
-.aher-part-expanded
-{
+.aher-part-expanded {
     display: inline;
 }
+
 .resource-report {
     display: table;
     height: 100%;
@@ -56,10 +56,8 @@
 
 .aher-report-toolbar {
     width: 100%;
-    height: 50px;
     background: #f5f5f5;
     border-bottom: 1px solid #ddd;
-    position: fixed;
     z-index: 10;
 }
 .aher-report-subsection-two-column {
@@ -75,7 +73,7 @@
 }
 
 .aher-report-toolbar-title {
-    font-size: 17px;
+    font-size: 1.7rem;
     font-weight: 500;
     margin-top: 0px;
     padding: 15px 0 5px 25px;
@@ -90,7 +88,7 @@
 .aher-report-name {
     padding-right: 5px;
     color: #595959;
-    font-size: 14px;
+    font-size: 1.4rem;
 }
 
 .aher-report-instance-name {
@@ -98,11 +96,7 @@
 }
 
 .aher-report-anchor-container {
-    overflow-x: auto;
-    white-space: nowrap;
-    position: fixed;
     width: 100%;
-    margin-top: 50px;
     z-index: 10;
 }
 
@@ -123,7 +117,7 @@
 
 .aher-report-a {
     color: #315B7D !important;
-    font-size: 13px;
+    font-size: 1.3rem;
     padding: 3px 8px;
 }
 
@@ -156,16 +150,19 @@ li, .aher-report-a.active:hover {
 
 .aher-report-a.active {
     color: #25476a !important;
+    text-decoration: underline;
 }
 
-.aher-tabbed-report{
+.aher-report-a:hover {
+    text-decoration: underline;
+}
+
+.aher-tabbed-report {
     width: calc(100% - 1px);
     overflow: auto;
     display: flex;
-    flex-direction: column;
-    margin-top: 95px;
     flex: 1;
-    flex-direction: column
+    flex-direction: column;
 }
 
 .aher-tab-container {
@@ -229,14 +226,14 @@ i.toggle:hover {
 }
 
 .aher-report-section-title {
-    font-size: 17px;
+    font-size: 1.7rem;
     font-weight: 500;
     margin: 5px 0px;
     display: inline-block;
 }
 
 .aher-report-section-subtitle {
-    font-size: 16px;
+    font-size: 1.6rem;
     font-weight: 400;
     margin: 5px 0px 0px 0px;
     display: inline-block;
@@ -345,7 +342,7 @@ i.toggle:hover {
 
 .aher-table .table td {
     color: #595959;
-    font-size: 13px;
+    font-size: 1.3rem;
     padding: 3px 8px;
 }
 
@@ -387,7 +384,7 @@ i.toggle:hover {
 .aher-table-control i {
     padding: 7px 4px;
     color: steelblue;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .aher-table-control a:hover {
@@ -425,7 +422,7 @@ i.toggle:hover {
 }
 
 .aher-report-subsection h3 {
-    font-size: 15px;
+    font-size: 1.5rem;
     font-weight: 500;
     margin: 5px 0px;
     display: inline-block;
@@ -434,7 +431,7 @@ i.toggle:hover {
 .aher-report-subsection h3 span {
     font-weight: 500;
     color: #555;
-    font-size: 15px;
+    font-size: 1.5rem;
 }
 
 h3.highlight {
@@ -507,14 +504,14 @@ h3.shim:hover {
 }
 
 .aher-block-attributes h4, .aher-block-attributes span {
-    font-size: 15px;
+    font-size: 1.5rem;
     font-weight: 400;
     margin: 2px 0px;
     display: inline-block;
 }
 
 .aher-block-attributes h6 {
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: 400;
     color: #2f527a;
     margin: 2px 0px;
@@ -566,7 +563,7 @@ h3.shim:hover {
 
 .aher-report-subsection-firstchild h4 {
     display: inline-block;
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: 500;
     color: #454545;
     padding-bottom: 3px;
@@ -618,11 +615,10 @@ h3.shim:hover {
 }
 
 .firstchild-container .aher-table table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
-    top: 7px;
     line-height: 14px;
 }
 
-.breadcrumb>li+li:before{
+.breadcrumb>li+li:before {
     content: "|"
 }
 
@@ -647,7 +643,7 @@ h3.shim:hover {
 }
 
 .aher-nodata-note {
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #595959;
     margin-bottom: 20px;
     margin-left: 10px;
@@ -690,7 +686,7 @@ h3.shim:hover {
 }
 
 .aher-title-block h1 {
-    font-size: 17px;
+    font-size: 1.7rem;
     margin: 5px 0px 2px 0px;
     display: inline-block;
 }
@@ -715,7 +711,7 @@ h3.shim:hover {
 }
 
 .aher-block-attributes {
-    font-size: 14px;
+    font-size: 1.4rem;
     line-height: 1.25;
     padding-top: 10px;
 }
@@ -741,7 +737,7 @@ h3.shim:hover {
 .aher-block-value {
     color: #595959;
     display: inline-block;
-    font-size: 15px;
+    font-size: 1.5rem;
 }
 
 .aher-block-value a {
@@ -750,7 +746,7 @@ h3.shim:hover {
 
 a.aher-block-value-url {
     color: #12548A;
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: 600;
     display: inline-block;
 }
@@ -760,20 +756,20 @@ a.aher-block-value-url {
 }
 
 .aher-summary-block-title h2 {
-    font-size: 15px;
+    font-size: 1.5rem;
     color: #727272;
     margin-bottom: 5px;
 }
 
 .aher-summary-block-content {
     color: #898989;
-    font-size: 14px;
+    font-size: 1.4rem;
     margin-top: -5px;
 }
 
 .aher-table .table th {
     border-bottom: none !important;
-    font-size: 13px !important;
+    font-size: 1.3rem !important;
 }
 
 .aher-table .table.dataTable > tbody > tr.child span.dtr-title {
@@ -854,12 +850,9 @@ a.aher-block-value-url {
     padding: 0px;
 }
 
-.aher-report-photo-caption .aher-block-key {
-    font-size: 12px;
-}
-
+.aher-report-photo-caption .aher-block-key,
 .aher-report-photo-caption .aher-block-value {
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 
 .aher-report-json {
@@ -873,17 +866,14 @@ a.aher-block-value-url {
 }
 
 .aher-summary-report-header {
-    height: 50px;
+    min-height: 50px;
     background: #fff;
-    position: fixed;
-    top: 101px;
     width: 100%;
-    margin-bottom: 60px;
     z-index: 10;
 }
 
 .aher-summary-report-title {
-    font-size: 19px;
+    font-size: 1.9rem;
     font-weight: 400;
     margin-left: 30px;
     margin-top: 20px;
@@ -893,7 +883,10 @@ a.aher-block-value-url {
 
 .model-summary-report {
     background: #fff;
-    padding: 55px 30px 30px 30px;
+    padding: 30px;
+    min-height: calc(100vh - 100px);
+    border: 0;
+    outline: none;
 }
 
 .graph-designer .aher-report-toolbar {
@@ -906,4 +899,83 @@ a.aher-block-value-url {
 
 .graph-designer .aher-tabbed-report {
     margin-top: auto;
+}
+
+table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+    top: inherit!important;
+    left: inherit;
+    height: inherit;
+    width: inherit;
+    display: inline-block;
+    position: relative;
+    color: #4682b4;
+    border: none;
+    border-radius: 0;
+    box-shadow: inherit;
+    box-sizing: inherit;
+    text-align: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    content: '\25BC  Show details';
+    background-color: inherit;
+    padding-right: 10px;
+}
+
+table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before,table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child:before {
+    content: '\25B2  Hide details';
+    background-color: inherit;
+}
+
+table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child {
+    padding-left: 0;
+}
+
+.resource-report-abstract-container {
+    height: calc(100vh - 50px);
+    min-height: calc(100vh - 50px);
+}
+
+.resource-report-abstract-container footer {
+    display: none !important;
+}
+
+.search-result-details {
+    height: auto;
+}
+
+.tab-pane.active {
+    outline: 0!important;
+}
+
+.aher-report-map .overlay-listing .overlay-name {
+    white-space: normal;
+    width: 100%;
+}
+
+.aher-report-map .overlay-listing .overlay-name span {
+    width: 70%;
+}
+
+.aher-report-map .basemap-listing,
+.aher-report-map .overlay-listing,
+.aher-report-map .legend-listing {
+    padding: 16px 0;
+}
+
+.aher-report-map .overlay-listing .overlay-opacity-control {
+    right: 0;
+}
+
+@media screen and (max-width: 1024px) {
+    .resource-report-abstract-container {
+        height: auto;
+    }
+
+    .search-result-details .resource-report {
+        display: block;
+    }
+    .aher-summary-report-title {
+        margin: 0;
+        padding: 10px 30px;
+    }
 }

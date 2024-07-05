@@ -5,9 +5,10 @@ define([
     'arches',
     'utils/resource',
     'utils/report',
+    'templates/views/components/reports/heritage-story.htm',
     'views/components/reports/scenes/name',
     'views/components/reports/scenes/json'
-], function($, _, ko, arches, resourceUtils, reportUtils) {
+], function($, _, ko, arches, resourceUtils, reportUtils, HeritageStoryTemplate) {
     return ko.components.register('heritage-story-report', {
         viewModel: function(params) {
             var self = this;
@@ -38,14 +39,15 @@ define([
             };
 
             self.resourceDataConfig = {
-                activities: undefined,
+                activities: 'associated activities',
                 consultations: undefined,
-                files: undefined,
-                assets: 'associated heritage assets, areas and artefacts',
+                files: 'digital file(s)',
+                assets: 'associated monuments, areas and artefacts',
                 translation: 'translation',
                 period: 'temporal coverage',
                 archive: undefined,
-                actors: 'associated actors'
+                actors: 'associated actors',
+                resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 
             self.locationDataConfig = {
@@ -101,6 +103,6 @@ define([
             }
 
         },
-        template: { require: 'text!templates/views/components/reports/heritage-story.htm' }
+        template: HeritageStoryTemplate
     });
 });

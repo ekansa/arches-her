@@ -1,4 +1,11 @@
-define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable'], function(_, ko, arches, reportUtils) {
+define([
+    'underscore', 
+    'knockout', 
+    'arches', 
+    'utils/report',
+    'templates/views/components/reports/scenes/people.htm',
+    'bindings/datatable'], 
+function(_, ko, arches, reportUtils, PeopleTemplate) {
     return ko.components.register('views/components/reports/scenes/people', {
         viewModel: function(params) {
             const self = this;
@@ -9,13 +16,12 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                 ...self.defaultTableConfig,
                 paging: true,
                 searching: true,
-                scrollY: "250px",
                 columns: Array(7).fill(null)
             };
 
             self.dataConfig = {
                 people: 'associated actors',
-            }
+            };
 
             self.cards = Object.assign({}, params.cards);
             self.edit = params.editTile || self.editTile;
@@ -24,11 +30,12 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
             self.people = ko.observableArray();
             self.visible = {
                 people: ko.observable(true),
-            }
+            };
             Object.assign(self.dataConfig, params.dataConfig || {});
 
             // if params.compiled is set and true, the user has compiled their own data.  Use as is.
             if(params?.compiled){
+                // do nothing
             } else {
                 const peopleNode = self.getRawNodeValue(params.data(), self.dataConfig.people); 
                 if(peopleNode?.length){
@@ -53,6 +60,6 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                 }
             } 
         },
-        template: { require: 'text!templates/views/components/reports/scenes/people.htm' }
+        template: PeopleTemplate
     });
 });

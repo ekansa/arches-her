@@ -5,10 +5,11 @@ define([
     'arches',
     'utils/resource',
     'utils/report',
+    'templates/views/components/reports/artefact.htm',
     'views/components/reports/scenes/name',
     'views/components/reports/scenes/json',
     'views/components/reports/scenes/archive'
-], function($, _, ko, arches, resourceUtils, reportUtils) {
+], function($, _, ko, arches, resourceUtils, reportUtils, ArtefactTemplate) {
     return ko.components.register('artefact-report', {
         viewModel: function(params) {
             var self = this;
@@ -79,9 +80,13 @@ define([
 
             self.resourceDataConfig = {
                 files: 'digital file(s)',
+                activities: 'associated activities',
                 consultations: undefined,
+                assets: 'associated monuments, areas and artefacts',
+                period: undefined,
+                actors: undefined,
                 archive: undefined,
-                actors: undefined
+                resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 
             self.nameCards = {};
@@ -215,6 +220,6 @@ define([
 
             }
         },
-        template: { require: 'text!templates/views/components/reports/artefact.htm' }
+        template: ArtefactTemplate
     });
 });

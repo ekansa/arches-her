@@ -10,14 +10,24 @@
                     "config": null,
                     "constraints": [],
                     "cssclass": null,
-                    "description": "System configuration for saving searches",
+                    "description": {
+                        "en": "System configuration for saving searches"
+                    },
                     "graph_id": "b6f174f5-fa13-11e6-9116-6c4008b05c4c",
                     "helpenabled": false,
-                    "helptext": null,
-                    "helptitle": null,
-                    "instructions": null,
+                    "helptext": {
+                        "en": null
+                    },
+                    "helptitle": {
+                        "en": null
+                    },
+                    "instructions": {
+                        "en": null
+                    },
                     "is_editable": true,
-                    "name": "Settings Saved Searches",
+                    "name": {
+                        "en": "Settings Saved Searches"
+                    },
                     "nodegroup_id": "b6f17257-fa13-11e6-8173-6c4008b05c4c",
                     "sortorder": null,
                     "visible": true
@@ -28,7 +38,9 @@
             "config": {},
             "deploymentdate": null,
             "deploymentfile": null,
-            "description": "System configuration for saving searches",
+            "description": {
+                "en": "System configuration for saving searches"
+            },
             "edges": [
                 {
                     "description": null,
@@ -71,10 +83,11 @@
             "graphid": "b6f174f5-fa13-11e6-9116-6c4008b05c4c",
             "iconclass": "fa fa-save",
             "is_editable": true,
-            "isactive": true,
             "isresource": false,
             "jsonldcontext": null,
-            "name": "Settings Saved Searches",
+            "name": {
+                "en": "Settings Saved Searches"
+            },
             "nodegroups": [
                 {
                     "cardinality": "n",
@@ -86,7 +99,7 @@
             "nodes": [
                 {
                     "alias": "search_description",
-                    "config": null,
+                    "config": {},
                     "datatype": "string",
                     "description": "Represents a single node in a graph",
                     "exportable": false,
@@ -102,11 +115,12 @@
                     "nodeid": "1c8d1766-fa14-11e6-8226-6c4008b05c4c",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E13_Attribute_Assignment",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P140i_was_attributed_by",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "search_url",
-                    "config": null,
+                    "config": {},
                     "datatype": "string",
                     "description": "Represents a single node in a graph",
                     "exportable": false,
@@ -122,12 +136,14 @@
                     "nodeid": "312e4cc5-fa14-11e6-ad08-6c4008b05c4c",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E13_Attribute_Assignment",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P140i_was_attributed_by",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "image",
                     "config": {
                         "activateMax": false,
+                        "imagesOnly": false,
                         "maxFileSize": null,
                         "maxFiles": 1
                     },
@@ -146,11 +162,12 @@
                     "nodeid": "54f907ae-fa14-11e6-8b01-6c4008b05c4c",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E13_Attribute_Assignment",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P140i_was_attributed_by",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "saved_searches",
-                    "config": null,
+                    "config": {},
                     "datatype": "semantic",
                     "description": "",
                     "exportable": false,
@@ -166,11 +183,12 @@
                     "nodeid": "b6f17257-fa13-11e6-8173-6c4008b05c4c",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E13_Attribute_Assignment",
                     "parentproperty": "",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "search_name",
-                    "config": null,
+                    "config": {},
                     "datatype": "string",
                     "description": "Represents a single node in a graph",
                     "exportable": false,
@@ -186,15 +204,17 @@
                     "nodeid": "e382bea6-fa13-11e6-bb8c-6c4008b05c4c",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E13_Attribute_Assignment",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P140i_was_attributed_by",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 }
             ],
             "ontology_id": "e6e8db47-2ccf-11e6-927e-b8f6b115d7dd",
+            "publication": null,
             "relatable_resource_model_ids": [],
             "resource_2_resource_constraints": [],
             "root": {
                 "alias": "saved_searches",
-                "config": null,
+                "config": {},
                 "datatype": "semantic",
                 "description": "",
                 "exportable": false,
@@ -209,10 +229,13 @@
                 "nodegroup_id": "b6f17257-fa13-11e6-8173-6c4008b05c4c",
                 "nodeid": "b6f17257-fa13-11e6-8173-6c4008b05c4c",
                 "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E13_Attribute_Assignment",
-                "sortorder": 0
+                "sortorder": 0,
+                "sourcebranchpublication_id": null
             },
             "slug": null,
-            "subtitle": "Saved search settings",
+            "subtitle": {
+                "en": "Saved search settings"
+            },
             "template_id": "50000000-0000-0000-0000-000000000001",
             "version": ""
         }

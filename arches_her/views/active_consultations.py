@@ -25,14 +25,13 @@ from arches.app.models.resource import Resource
 from arches.app.models.tile import Tile
 from arches.app.datatypes.datatypes import DataTypeFactory
 import json
-import re
+from datetime import datetime
+from arches.app.models.system_settings import settings
 
 
 class ActiveConsultationsView(View):
     def __init__(self):
-        self.cons_details_nodegroupid = (
-            "771bb1e2-8895-11ea-8446-f875a44e0e11"  # "Consultation Type" nodegroup, needs to be updated but not used
-        )
+        self.cons_details_nodegroupid = "771bb1e2-8895-11ea-8446-f875a44e0e11"  # "Consultation Type" nodegroup, needs to be updated but not used
         self.consultation_graphid = "8d41e49e-a250-11e9-9eab-00224800b26d"
         self.cons_status_bool_nodeid = "6a773228-db20-11e9-b6dd-784f435179ea"
         self.active_cons_node_list = {  # if this is not up-to-date sorting will break
@@ -48,13 +47,23 @@ class ActiveConsultationsView(View):
     def get(self, request):
         page_num = 1 if request.GET.get("page") == "" else int(request.GET.get("page"))
         order_param = request.GET.get("order")
-        keyword = None if request.GET.get("keyword") == "" or request.GET.get("keyword") == None else (request.GET.get("keyword"))
+        keyword = (
+            None
+            if request.GET.get("keyword") == "" or request.GET.get("keyword") == None
+            else (request.GET.get("keyword"))
+        )
         datatype_factory = DataTypeFactory()
-        consultation_status_tiles = Tile.objects.filter(nodegroup_id=self.cons_status_bool_nodeid)
+        consultation_status_tiles = Tile.objects.filter(
+            nodegroup_id=self.cons_status_bool_nodeid
+        )
         include_list = [
-            tile.resourceinstance_id for tile in consultation_status_tiles if tile.data[self.cons_status_bool_nodeid] is not False
+            tile.resourceinstance_id
+            for tile in consultation_status_tiles
+            if tile.data[self.cons_status_bool_nodeid] is not False
         ]
-        filtered_consultations = Resource.objects.filter(graph_id=self.consultation_graphid, resourceinstanceid__in=include_list)
+        filtered_consultations = Resource.objects.filter(
+            graph_id=self.consultation_graphid, resourceinstanceid__in=include_list
+        )
 
         order_config = {  # if this is not up-to-date sorting will break
             "Log Date: Newest to Oldest": ("Log Date", True),
@@ -77,17 +86,50 @@ class ActiveConsultationsView(View):
         if filtered_consultations is not None:
             if page_num == -1:
                 grouped_tile_list = build_resource_dict(
-                    filtered_consultations, self.active_cons_node_list, datatype_factory, keyword=keyword, layout="table"
+                    filtered_consultations,
+                    self.active_cons_node_list,
+                    datatype_factory,
+                    keyword=keyword,
+                    layout="table",
                 )
             elif page_num >= 1:
                 grouped_tile_list = build_resource_dict(
-                    filtered_consultations, self.active_cons_node_list, datatype_factory, keyword=keyword
+                    filtered_consultations,
+                    self.active_cons_node_list,
+                    datatype_factory,
+                    keyword=keyword,
                 )
-            if order_param in list(order_config.keys()) and order_param is not None:
+            if order_param in order_config:
+                date_formats = settings.DATE_FORMATS["Python"]
+                date_only_format = next(
+                    (
+                        format
+                        for format in date_formats
+                        if "%Y" in format
+                        and "%m" in format
+                        and "%d" in format
+                        and "%H" not in format
+                        and "%M" not in format
+                        and "%S" not in format
+                    ),
+                    None,
+                )
                 try:
                     grouped_tile_list = sorted(
                         grouped_tile_list,
-                        key=lambda resource: resource[order_config[order_param][0]],
+                        key=lambda resource: (
+                            resource.get(order_config[order_param][0]) is None,
+                            (
+                                datetime.strptime(
+                                    resource.get(order_config[order_param][0]),
+                                    date_only_format,
+                                ).strftime("%Y%m%d")
+                                if "Date" in order_config[order_param][0]
+                                and resource.get(order_config[order_param][0])
+                                and resource.get(order_config[order_param][0]) != ""
+                                else resource.get(order_config[order_param][0])
+                            ),
+                        ),
                         reverse=order_config[order_param][1],
                     )
                 except KeyError as e:
@@ -116,8 +158,12 @@ class ActiveConsultationsView(View):
             before = list(range(1, page_num))
             after = list(range(page_num + 1, paginator.num_pages + 1))
             default_ct = 2
-            ct_before = default_ct if len(after) > default_ct else default_ct * 2 - len(after)
-            ct_after = default_ct if len(before) > default_ct else default_ct * 2 - len(before)
+            ct_before = (
+                default_ct if len(after) > default_ct else default_ct * 2 - len(after)
+            )
+            ct_after = (
+                default_ct if len(before) > default_ct else default_ct * 2 - len(before)
+            )
             if len(before) > ct_before:
                 before = [1, None] + before[-1 * (ct_before - 1) :]
             if len(after) > ct_after:
@@ -135,10 +181,14 @@ class ActiveConsultationsView(View):
             "previous_page_number": prev_page_number,
             "start_index": page_results.start_index(),
         }
-        return JSONResponse({"page_results": page_results.object_list, "paginator": page_config})
+        return JSONResponse(
+            {"page_results": page_results.object_list, "paginator": page_config}
+        )
 
 
-def build_resource_dict(consultations, active_cons_node_list, datatype_factory, layout="grid", keyword=None):
+def build_resource_dict(
+    consultations, active_cons_node_list, datatype_factory, layout="grid", keyword=None
+):
     """
     builds a list that looks like this:
     [
@@ -171,7 +221,11 @@ def build_resource_dict(consultations, active_cons_node_list, datatype_factory, 
                     try:
                         datatype = datatype_factory.get_instance(node.datatype)
                         val = datatype.get_display_value(tile, node)
-                        if layout == "grid" and nodeid == active_cons_node_list["Geospatial Coordinates"]:
+                        if (
+                            layout == "grid"
+                            and nodeid
+                            == active_cons_node_list["Geospatial Coordinates"]
+                        ):
                             val = json.loads(val)
                     except Exception as e:
                         # print('Error:',e)

@@ -1,8 +1,9 @@
 define([
     'knockout',
     'views/components/workflows/summary-step',
-    'viewmodels/alert'
-], function(ko, SummaryStep, AlertViewModel) {
+    'viewmodels/alert',
+    'templates/views/components/workflows/site-visit/site-visit-final-step.htm'
+], function(ko, SummaryStep, AlertViewModel, SiteVisitFinalStepTemplate) {
 
     function viewModel(params) {
         var self = this;
@@ -28,7 +29,7 @@ define([
                 consultationName: {'name': 'Consultation', 'value': this.getResourceValue(val, ['displayname'])},
                 date: {'name': 'Date', 'value': this.getResourceValue(currentSiteVisit, ['Timespan of Visit', 'Date of Visit', '@value'])},
                 locatinDescription: {'name': 'Visit Location Description', 'value': this.getResourceValue(currentSiteVisit, ['Location', 'Location Descriptions', 'Location Description', '@value'])},
-            }
+            };
 
             try {
                 this.reportVals.attendees = currentSiteVisit['Attendees'].map(function(attendee){
@@ -36,7 +37,7 @@ define([
                         attendee: {'name': 'Attendee', 'value': self.getResourceValue(attendee, ['Attendee', '@value'])},
                         attendeeType: {'name': 'Type', 'value': self.getResourceValue(attendee, ['Attendee Type', '@value'])},
                     };
-                })
+                });
             } catch(e) {
                 this.reportVals.attendees = [];
             }
@@ -47,7 +48,7 @@ define([
                         observation: {'name': 'observation', 'value': self.getResourceValue(obs, ['Observation', 'Observation Notes', '@value'])},
                         observedBy: {'name': 'observedBy', 'value': self.getResourceValue(obs, ['Observed by', '@value'])},
                     };
-                })
+                });
             } catch(e) {
                 this.reportVals.observations = [];
             }
@@ -58,7 +59,7 @@ define([
                         recommendation: {'name': 'recommendation', 'value': self.getResourceValue(rec, ['Recommendation', 'Recommendation Value', '@value'])},
                         recommendedBy: {'name': 'recommendedBy', 'value': self.getResourceValue(rec, ['Recommended by', '@value'])},
                     };
-                })
+                });
             } catch(e) {
                 this.reportVals.recommendations = [];
             }
@@ -72,7 +73,7 @@ define([
                         copyrightHolder: {'name': 'Copyright Holder', 'value': self.getResourceValue(photograph, ['Copyright', 'Copyright Holder', '@value'])},
                         copyrightNotes: {'name': 'Copyright Notes', 'value': self.getResourceValue(photograph, ['Copyright', 'Copyright Note', 'Copyright Note Text', '@value'])},
                     };
-                })
+                });
             } catch(e) {
                 this.reportVals.photographs = [];
             }
@@ -82,7 +83,7 @@ define([
 
     ko.components.register('site-visit-final-step', {
         viewModel: viewModel,
-        template: { require: 'text!templates/views/components/workflows/site-visit/site-visit-final-step.htm' }
+        template: SiteVisitFinalStepTemplate
     });
     return viewModel;
 });

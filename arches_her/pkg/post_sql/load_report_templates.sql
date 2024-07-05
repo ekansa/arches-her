@@ -1,6 +1,5 @@
 update graphs set templateid = 'eeb7054c-df37-45d1-8f09-39abb582077e' where graphid = 'b9e0701e-5463-11e9-b5f5-000d3ab1e588'; -- Activity
 update graphs set templateid = '9ed340ba-88c6-4982-9487-c3aae4b14d16' where graphid = '42ce82f6-83bf-11ea-b1e8-f875a44e0e11'; -- Application Area
-update graphs set templateid = '75e5968a-72cf-4a07-8e0d-1cc3e81d34c8' where graphid = 'b07cfa6f-894d-11ea-82aa-f875a44e0e11'; -- Archive Source
 update graphs set templateid = 'b32fc2f2-5570-46c2-8d1e-09ca54c750ab' where graphid = '343cc20c-2c5a-11e8-90fa-0242ac120005'; -- Artefact
 update graphs set templateid = '44fdae23-7883-4d5c-88fa-7498b6fc898d' where graphid = '24d7b54f-5464-11e9-a86b-000d3ab1e588'; -- Bibliographic Source
 update graphs set templateid = '465443ea-0e01-4895-a9cf-5144b02213da' where graphid = '8d41e49e-a250-11e9-9eab-00224800b26d'; -- Consultation

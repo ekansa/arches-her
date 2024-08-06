@@ -188,6 +188,37 @@ div.workflow-content {
     flex-direction: row-reverse;
 }
 
+.her-demo.loading-mask-string {
+    color: #999;
+    background-color: #fafafa;
+    padding: 60px 50px;
+}
+
+@media (max-height:1024px) {
+    .her-demo.loading-mask-string {
+        color: #999;
+        background-color: #fafafa;
+        padding: 300px 0 0 0;
+    }
+}
+
+@media (max-height:950px) {
+    .her-demo.loading-mask-string {
+        color: #999;
+        background-color: #fafafa;
+        padding: 300px 0 0 0;
+    }
+}
+
+@media (max-height:850px) {
+    .her-demo.loading-mask-string {
+        color: #999;
+        background-color: #fafafa;
+        padding: 200px 0 0 0;
+        font-size: 2.2rem;
+    }
+}
+
 .workflow-step-loading-mask {
     top: 95px;
 }
